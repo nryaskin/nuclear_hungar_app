@@ -18,15 +18,21 @@ HangarView::~HangarView()
     tearDown();
 }
 
+void HangarView::setGWorld()
+{
+    int gWorldLocation = m_program->uniformLocation("gWorld");
+    static GLfloat dt = 0.0f;
+    dt += 0.01;
+    m_transformation->setTranslation(dt, dt, 0.0f);
+    m_program->setUniformValue(gWorldLocation, m_transformation->toMatrix());
+}
+
 void HangarView::renderSceneCB()
 {
     makeCurrent();
     m_program->bind();
     {
-        int gScaleLocation = m_program->uniformLocation("gScale");
-        static GLfloat Scale = 0.0f;
-        Scale += 0.001f;
-        m_program->setUniformValue(gScaleLocation, Scale);
+         setGWorld();
     }
     m_program->release();
     update();
@@ -34,6 +40,7 @@ void HangarView::renderSceneCB()
 
 void HangarView::initializeGL()
 {
+    m_transformation = new Transformation3D();
     QTimer *timer = new QTimer(this);
     connect(timer, SIGNAL(timeout()), this, SLOT(renderSceneCB()));
     initializeOpenGLFunctions();
@@ -70,6 +77,9 @@ void HangarView::initializeGL()
         m_program->link();
         m_program->bind();
 
+        //setting world global matrix
+        setGWorld();
+
         // Create Buffer (Do not release until VAO is created)
         m_vertex.create();
         m_vertex.bind();
@@ -89,7 +99,7 @@ void HangarView::initializeGL()
         m_vertex.release();
         m_program->release();
     }
-    timer->start(1);
+    timer->start(1000);
 }
 
 void HangarView::paintGL(){
@@ -114,4 +124,5 @@ void HangarView::tearDown()
     m_object.destroy();
     m_vertex.destroy();
     delete m_program;
+    delete m_transformation;
 }

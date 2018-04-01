@@ -5,6 +5,7 @@
 #include <QOpenGLFunctions>
 #include <QOpenGLBuffer>
 #include <QOpenGLVertexArrayObject>
+#include "transformation3d.h"
 
 class QOpenGLShaderProgram;
 
@@ -24,10 +25,12 @@ public slots:
     void renderSceneCB();
 
 private:
+    void setGWorld();
+private:
     QOpenGLBuffer m_vertex;
     QOpenGLVertexArrayObject m_object;
     QOpenGLShaderProgram *m_program;
-
+    Transformation3D *m_transformation;
 
 };
 
