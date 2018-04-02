@@ -7,9 +7,9 @@
 #include <QtWidgets>
 
 static const Vertex sg_vertexes[] = {
-  Vertex( QVector3D( 0.00f,  0.75f, 1.0f), QVector3D(1.0f, 0.0f, 0.0f) ),
-  Vertex( QVector3D( 0.75f, -0.75f, 1.0f), QVector3D(0.0f, 1.0f, 0.0f) ),
-  Vertex( QVector3D(-0.75f, -0.75f, 1.0f), QVector3D(0.0f, 0.0f, 1.0f) )
+  Vertex( QVector3D( 0.00f,  0.75f, 0.9f), QVector3D(1.0f, 0.0f, 0.0f) ),
+  Vertex( QVector3D( 0.75f, -0.75f, 0.9f), QVector3D(0.0f, 1.0f, 0.0f) ),
+  Vertex( QVector3D(-0.75f, -0.75f, 0.9f), QVector3D(0.0f, 0.0f, 1.0f) )
 };
 
 HangarView::~HangarView()
@@ -22,8 +22,8 @@ void HangarView::setGWorld()
 {
     int gWorldLocation = m_program->uniformLocation("gWorld");
     static GLfloat dt = 0.0f;
-    dt += 0.01;
-    m_transformation->setTranslation(dt, dt, 0.0f);
+    dt += 0.1;
+    m_transformation->setRotation(dt, QVector3D(0.0f, 1.0f, 0.0f));
     m_program->setUniformValue(gWorldLocation, m_transformation->toMatrix());
 }
 
@@ -99,7 +99,7 @@ void HangarView::initializeGL()
         m_vertex.release();
         m_program->release();
     }
-    timer->start(1000);
+    timer->start(10);
 }
 
 void HangarView::paintGL(){
