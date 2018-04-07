@@ -58,15 +58,21 @@ HangarView::HangarView()
     QVector3D CameraPos(1.0f, 1.0f, -3.0f);
     QVector3D CameraTarget(0.45f, 0.0f, 1.0f);
     QVector3D CameraUp(0.0f, 1.0f, 0.0f);
-    Camera cam(CameraPos, CameraTarget, CameraUp);
+    Camera cam(800, 600);
     m_transformation.setCamera(cam);
     //m_transformation.scale(0.5f);
+}
+//User enteractions event handlers
+void HangarView::mouseMoveEvent(QMouseEvent *mouseEvent)
+{
+    m_transformation.camera().onMouseMove(mouseEvent->x(), mouseEvent->y());
 }
 
 void HangarView::keyPressEvent(QKeyEvent *k)
 {
-     m_transformation.camera().OnKeyboard(k->key());
+     m_transformation.camera().onKeyboard(k->key());
 }
+
 
 HangarView::~HangarView()
 {
@@ -88,6 +94,7 @@ void HangarView::setGWorld()
 
 void HangarView::renderSceneCB()
 {
+    m_transformation.camera().onRender();
     makeCurrent();
     m_program->bind();
     {
@@ -152,6 +159,8 @@ void HangarView::paintGL(){
 
 void HangarView::resizeGl(int width, int height)
 {
+    m_transformation.camera().setWindowHeight(height);
+    m_transformation.camera().setWindowWidth(width);
     m_transformation.setPerspectiveProj(45.0f, width, height, 0.0f, 10.0f);
 }
 

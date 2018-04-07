@@ -62,7 +62,7 @@ private:
 };
 Q_DECLARE_TYPEINFO(Transformation3D, Q_MOVABLE_TYPE);
 
-inline Transformation3D::Transformation3D() : m_dirty(true), m_scale(1.0f, 1.0f, 1.0f) {camera_translation_trans.setToIdentity(); camera_translation_trans.setToIdentity();}
+inline Transformation3D::Transformation3D() : m_dirty(true), m_scale(1.0f, 1.0f, 1.0f), m_camera(800, 600) {camera_translation_trans.setToIdentity(); camera_translation_trans.setToIdentity();}
 // Transform By (Add/Scale)
 inline void Transformation3D::translate(float dx, float dy,float dz) { translate(QVector3D(dx, dy, dz)); }
 inline void Transformation3D::rotate(float angle, const QVector3D &axis) { rotate(QQuaternion::fromAxisAndAngle(axis, angle)); }
