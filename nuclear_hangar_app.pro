@@ -21,22 +21,23 @@ DEFINES += QT_DEPRECATED_WARNINGS
 # In order to do so, uncomment the following line.
 # You can also select to disable deprecated APIs only up to a certain version of Qt.
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
-
+INCLUDEPATH += ./inc
+INCLUDEPATH += ./src
 
 SOURCES += \
-        main.cpp \
-        mainwindow.cpp \
-    hangarview.cpp \
-    transformation3d.cpp \
-    camera.cpp
+        src/main.cpp \
+        src/mainwindow.cpp \
+    src/hangarview.cpp \
+    src/transformation3d.cpp \
+    src/camera.cpp
 
 HEADERS += \
-        mainwindow.h \
-    hangarview.h \
-    vertex.h \
-    transformation3d.h \
-    projection_util.h \
-    camera.h
+        inc/mainwindow.h \
+    inc/hangarview.h \
+    inc/vertex.h \
+    inc/transformation3d.h \
+    inc/projection_util.h \
+    inc/camera.h
 
 FORMS += \
         mainwindow.ui
