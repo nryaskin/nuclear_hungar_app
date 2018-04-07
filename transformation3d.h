@@ -4,6 +4,8 @@
 #include <QVector3D>
 #include <QQuaternion>
 #include <QMatrix4x4>
+#include "projection_util.h"
+#include "camera.h"
 
 class Transformation3D
 {
@@ -33,11 +35,19 @@ public:
     void setScale(float x, float y, float z);
     void setScale(float k);
 
+    //Perspective proj
+    void setPerspectiveProj(float angle, float width, float height, float znear, float zfar);
+    void setPerspectiveProj(perspective_t pers);
+
+    //camera classes
+    void initCameraTransform(const QVector3D &target, const QVector3D &up);
+    void setCamera(const Camera &camera);
 
     // Accessors
     const QVector3D& translation() const;
     const QQuaternion& rotation() const;
     const QVector3D& scale() const;
+    Camera& camera();
     const QMatrix4x4& toMatrix();
 private:
     bool m_dirty;
@@ -45,10 +55,14 @@ private:
     QVector3D m_scale;
     QQuaternion m_rotation;
     QMatrix4x4 m_world;
+    QMatrix4x4 camera_translation_trans;
+    QMatrix4x4 camera_rotate_trans;
+    Camera m_camera;
+    perspective_t m_pers_proj;
 };
 Q_DECLARE_TYPEINFO(Transformation3D, Q_MOVABLE_TYPE);
 
-inline Transformation3D::Transformation3D() : m_dirty(true) {}
+inline Transformation3D::Transformation3D() : m_dirty(true), m_scale(1.0f, 1.0f, 1.0f) {camera_translation_trans.setToIdentity(); camera_translation_trans.setToIdentity();}
 // Transform By (Add/Scale)
 inline void Transformation3D::translate(float dx, float dy,float dz) { translate(QVector3D(dx, dy, dz)); }
 inline void Transformation3D::rotate(float angle, const QVector3D &axis) { rotate(QQuaternion::fromAxisAndAngle(axis, angle)); }
@@ -64,9 +78,11 @@ inline void Transformation3D::setRotation(float angle, const QVector3D &axis) { 
 inline void Transformation3D::setRotation(float angle, float ax, float ay, float az) { setRotation(QQuaternion::fromAxisAndAngle(ax, ay, az, angle)); }
 inline void Transformation3D::setScale(float x, float y, float z) { setScale(QVector3D(x, y, z)); }
 inline void Transformation3D::setScale(float k) { setScale(QVector3D(k, k, k)); }
-
+inline void Transformation3D::setPerspectiveProj(float angle, float width, float height, float znear, float zfar) {setPerspectiveProj(perspective_t{angle, width/height, znear, zfar});}
+inline void Transformation3D::setCamera(const Camera &camera) { m_camera = camera;}
 // Accessors
 inline const QVector3D& Transformation3D::translation() const { return m_translation; }
 inline const QQuaternion& Transformation3D::rotation() const { return m_rotation; }
 inline const QVector3D& Transformation3D::scale() const { return m_scale; }
+inline Camera &Transformation3D::camera() { return m_camera;}
 #endif // TRANSFORMATION3D_H

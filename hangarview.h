@@ -15,6 +15,7 @@ class HangarView : public QOpenGLWidget,
     Q_OBJECT
 
 public:
+    HangarView();
     ~HangarView();
 
     void initializeGL();
@@ -24,13 +25,16 @@ public:
 public slots:
     void renderSceneCB();
 
+protected:
+    void keyPressEvent(QKeyEvent *k);
+
 private:
     void setGWorld();
 private:
     QOpenGLBuffer m_vertex;
     QOpenGLVertexArrayObject m_object;
     QOpenGLShaderProgram *m_program;
-    Transformation3D *m_transformation;
+    Transformation3D m_transformation;
 
 };
 

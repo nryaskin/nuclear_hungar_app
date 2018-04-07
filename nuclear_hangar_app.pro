@@ -5,7 +5,7 @@
 #-------------------------------------------------
 
 QT       += core gui
-
+CONFIG += c++14
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
 TARGET = nuclear_hangar_app
@@ -27,13 +27,16 @@ SOURCES += \
         main.cpp \
         mainwindow.cpp \
     hangarview.cpp \
-    transformation3d.cpp
+    transformation3d.cpp \
+    camera.cpp
 
 HEADERS += \
         mainwindow.h \
     hangarview.h \
     vertex.h \
-    transformation3d.h
+    transformation3d.h \
+    projection_util.h \
+    camera.h
 
 FORMS += \
         mainwindow.ui
