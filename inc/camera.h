@@ -28,6 +28,7 @@ public:
     const QVector3D& pos() const;
     const QVector3D& target() const;
     const QVector3D& up() const;
+    QVector2D& mousePos();
     int windowWidth();
     int windowHeight();
 
@@ -56,6 +57,7 @@ private:
 inline const QVector3D& Camera::pos() const {return m_pos;}
 inline const QVector3D& Camera::target() const {return m_target;}
 inline const QVector3D& Camera::up() const {return m_up;}
+inline QVector2D &Camera::mousePos() {return m_mousePos;}
 inline int Camera::windowWidth() {return m_windowWidth;}
 inline int Camera::windowHeight() {return m_windowHeight;}
 

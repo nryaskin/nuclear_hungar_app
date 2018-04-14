@@ -73,6 +73,10 @@ void HangarView::keyPressEvent(QKeyEvent *k)
      m_transformation.camera().onKeyboard(k->key());
 }
 
+void HangarView::mousePressEvent(QMouseEvent *mouseEvent){
+    m_transformation.camera().mousePos().setX(mouseEvent->x());
+    m_transformation.camera().mousePos().setY(mouseEvent->y());
+}
 
 HangarView::~HangarView()
 {
@@ -85,8 +89,6 @@ void HangarView::setGWorld()
     int gWorldLocation = m_program->uniformLocation("gWorld");
     static float Scale = 0.0f;
     Scale += 0.001f;
-    //m_transformation->setScale(sinf(Scale * 0.1f), sinf(Scale * 0.1f), sinf(Scale * 0.1f));
-    //m_transformation->translate(sinf(Scale), 0.0f, 0.0f);
     m_transformation.rotate(Scale, QVector3D(sinf(Scale) * 90.0f, sinf(Scale) * 90.0f, sinf(Scale) * 90.0f));
     m_transformation.setPerspectiveProj(45.0f, this->width(), this->height(), 0.0f, 1000.0f);
     m_program->setUniformValue(gWorldLocation, m_transformation.toMatrix());
@@ -129,7 +131,6 @@ void HangarView::initializeGL()
         m_vertex.bind();
         m_vertex.setUsagePattern(QOpenGLBuffer::StaticDraw);
         m_vertex.allocate(sg_vertexes, sizeof(sg_vertexes));
-
         // Create Vertex Array Object
         m_object.create();
         m_object.bind();

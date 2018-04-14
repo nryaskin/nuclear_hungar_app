@@ -28,7 +28,7 @@ public slots:
 protected:
     void keyPressEvent(QKeyEvent *k);
     void mouseMoveEvent(QMouseEvent *mouseEvent);
-
+    void mousePressEvent(QMouseEvent *mouseEvent);
 private:
     void setGWorld();
 private:
