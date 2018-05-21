@@ -1,7 +1,6 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
-#include "hangarview.h"
-
+#include "mainwindowwidget.h"
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -13,8 +12,8 @@ MainWindow::MainWindow(QWidget *parent) :
 
 void MainWindow::addGLWidget()
 {
-    HangarView *hg_view = new HangarView();
-    setCentralWidget(hg_view);
+     MainWindowWidget* mw_widget = new MainWindowWidget();
+     setCentralWidget(mw_widget);
 }
 
 MainWindow::~MainWindow()
