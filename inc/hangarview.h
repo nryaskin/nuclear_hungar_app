@@ -6,8 +6,14 @@
 #include <QOpenGLBuffer>
 #include <QOpenGLVertexArrayObject>
 #include "transformation3d.h"
+#include <vector>
 
 class QOpenGLShaderProgram;
+
+struct s_pos{
+  int i;
+  int j;
+};
 
 class HangarView : public QOpenGLWidget,
                    protected QOpenGLFunctions
@@ -24,7 +30,7 @@ public:
     void tearDown();
 public slots:
     void renderSceneCB();
-
+    void addContainerClicked();
 protected:
     void keyPressEvent(QKeyEvent *k);
     void mouseMoveEvent(QMouseEvent *mouseEvent);
@@ -32,6 +38,9 @@ protected:
 private:
     void setGWorld();
 private:
+    int r_i = 0;
+    int c_j = 0;
+    std::vector <s_pos> i_containers;
     QOpenGLBuffer m_vertex;
     QOpenGLVertexArrayObject m_object;
     QOpenGLShaderProgram *m_program;

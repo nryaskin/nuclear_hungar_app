@@ -32,7 +32,7 @@ public:
     int windowWidth();
     int windowHeight();
 
-    static const int step_size = 1;
+    static const int step_size = 1000;
     static const int MARGIN = 10;
 
 private:

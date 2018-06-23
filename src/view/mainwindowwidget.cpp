@@ -8,6 +8,7 @@ MainWindowWidget::MainWindowWidget(QWidget *parent) : QWidget(parent)
     layout->addItem(hangar_item, 0, 0, 4, 35);
 
     QPushButton *button1 = new QPushButton("Добавить ящик");
+    QObject::connect(button1, SIGNAL(clicked()),hg_view, SLOT(addContainerClicked()));
     QPushButton *button2 = new QPushButton("Убрать ящик");
     QPushButton *button3 = new QPushButton("Построить маршрут");
 

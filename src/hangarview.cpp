@@ -7,20 +7,81 @@
 #include <QtWidgets>
 #include "camera.h"
 
-// Front Verticies
-#define VERTEX_FTR Vertex( QVector3D( 0.5f,  0.5f,  0.5f), QVector3D( 1.0f, 0.0f, 0.0f ) )
-#define VERTEX_FTL Vertex( QVector3D(-0.5f,  0.5f,  0.5f), QVector3D( 0.0f, 1.0f, 0.0f ) )
-#define VERTEX_FBL Vertex( QVector3D(-0.5f, -0.5f,  0.5f), QVector3D( 0.0f, 0.0f, 1.0f ) )
-#define VERTEX_FBR Vertex( QVector3D( 0.5f, -0.5f,  0.5f), QVector3D( 0.0f, 0.0f, 0.0f ) )
+//FLOOR sizes in mm
+#define FLOOR_LENGTH 36000.0f
+#define FLOOR_WIDTH  12000.0f
+#define FLOOR_HEIGHT 250.0f
 
-// Back Verticies
-#define VERTEX_BTR Vertex( QVector3D( 0.5f,  0.5f, -0.5f), QVector3D( 1.0f, 1.0f, 0.0f ) )
-#define VERTEX_BTL Vertex( QVector3D(-0.5f,  0.5f, -0.5f), QVector3D( 0.0f, 1.0f, 1.0f ) )
-#define VERTEX_BBL Vertex( QVector3D(-0.5f, -0.5f, -0.5f), QVector3D( 1.0f, 0.0f, 1.0f ) )
-#define VERTEX_BBR Vertex( QVector3D( 0.5f, -0.5f, -0.5f), QVector3D( 1.0f, 1.0f, 1.0f ) )
+//CUBEsizes in mm
+#define CUBE_LENGTH 1650.0f
+#define CUBE_WIDTH  1650.0f
+#define CUBE_HEIGHT 1375.0f
+
+
+// Front CUBE Verticies
+#define VERTEX_FTR Vertex( QVector3D( CUBE_LENGTH/2,  CUBE_HEIGHT/2,  CUBE_WIDTH/2),\
+                             QVector3D( 0.0f, 0.0f, 0.0f ) )
+#define VERTEX_FTL Vertex( QVector3D( -CUBE_LENGTH/2,  CUBE_HEIGHT/2,  CUBE_WIDTH/2),\
+                             QVector3D( 0.0f, 0.0f, 0.0f ) )
+#define VERTEX_FBL Vertex( QVector3D( -CUBE_LENGTH/2, -CUBE_HEIGHT/2,  CUBE_WIDTH/2),\
+                             QVector3D( 0.0f, 0.0f, 0.0f ) )
+#define VERTEX_FBR Vertex( QVector3D( CUBE_LENGTH/2, -CUBE_HEIGHT/2,  CUBE_WIDTH/2), \
+                             QVector3D( 0.0f, 0.0f, 0.0f ) )
+
+// Back CUBE Verticies
+#define VERTEX_BTR Vertex( QVector3D( CUBE_LENGTH/2,  CUBE_HEIGHT/2, -CUBE_WIDTH/2), \
+                             QVector3D( 0.0f, 0.0f, 0.0f ) )
+#define VERTEX_BTL Vertex( QVector3D(-CUBE_LENGTH/2,  CUBE_HEIGHT/2, -CUBE_WIDTH/2), \
+                             QVector3D( 0.0f, 0.0f, 1.0f ) )
+#define VERTEX_BBL Vertex( QVector3D(-CUBE_LENGTH/2, -CUBE_HEIGHT/2, -CUBE_WIDTH/2), \
+                             QVector3D( 0.0f, 0.0f, 1.0f ) )
+#define VERTEX_BBR Vertex( QVector3D( CUBE_LENGTH/2, -CUBE_HEIGHT/2, -CUBE_WIDTH/2), \
+                             QVector3D( 0.0f, 0.0f, 0.0f ) )
+
+
+// Front Floor Verticies
+#define F_VERTEX_FTR Vertex( QVector3D( FLOOR_LENGTH/2,  FLOOR_HEIGHT/2,  FLOOR_WIDTH/2),\
+                             QVector3D( 0.0f, 0.0f, 0.0f ) )
+#define F_VERTEX_FTL Vertex( QVector3D( -FLOOR_LENGTH/2,  FLOOR_HEIGHT/2,  FLOOR_WIDTH/2),\
+                             QVector3D( 0.0f, 0.0f, 0.0f ) )
+#define F_VERTEX_FBL Vertex( QVector3D( -FLOOR_LENGTH/2, -FLOOR_HEIGHT/2,  FLOOR_WIDTH/2),\
+                             QVector3D( 0.0f, 0.0f, 0.0f ) )
+#define F_VERTEX_FBR Vertex( QVector3D( FLOOR_LENGTH/2, -FLOOR_HEIGHT/2,  FLOOR_WIDTH/2), \
+                             QVector3D( 0.0f, 0.0f, 0.0f ) )
+
+// Back Floor Verticies
+#define F_VERTEX_BTR Vertex( QVector3D( FLOOR_LENGTH/2,  FLOOR_HEIGHT/2, -FLOOR_WIDTH/2), \
+                             QVector3D( 0.0f, 0.0f, 0.0f ) )
+#define F_VERTEX_BTL Vertex( QVector3D(-FLOOR_LENGTH/2,  FLOOR_HEIGHT/2, -FLOOR_WIDTH/2), \
+                             QVector3D( 0.0f, 0.0f, 1.0f ) )
+#define F_VERTEX_BBL Vertex( QVector3D(-FLOOR_LENGTH/2, -FLOOR_HEIGHT/2, -FLOOR_WIDTH/2), \
+                             QVector3D( 0.0f, 0.0f, 1.0f ) )
+#define F_VERTEX_BBR Vertex( QVector3D( FLOOR_LENGTH/2, -FLOOR_HEIGHT/2, -FLOOR_WIDTH/2), \
+                             QVector3D( 0.0f, 0.0f, 0.0f ) )
+
+static const Vertex sg_floor_vertexes[] = {
+    // Face 1 (Front)
+      F_VERTEX_FTR, F_VERTEX_FTL, F_VERTEX_FBL,
+      F_VERTEX_FBL, F_VERTEX_FBR, F_VERTEX_FTR,
+    // Face 2 (Back)
+      F_VERTEX_BBR, F_VERTEX_BTL, F_VERTEX_BTR,
+      F_VERTEX_BTL, F_VERTEX_BBR, F_VERTEX_BBL,
+    // Face 3 (Top)
+      F_VERTEX_FTR, F_VERTEX_BTR, F_VERTEX_BTL,
+      F_VERTEX_BTL, F_VERTEX_FTL, F_VERTEX_FTR,
+    // Face 4 (Bottom)
+      F_VERTEX_FBR, F_VERTEX_FBL, F_VERTEX_BBL,
+      F_VERTEX_BBL, F_VERTEX_BBR, F_VERTEX_FBR,
+    // Face 5 (Left)
+      F_VERTEX_FBL, F_VERTEX_FTL, F_VERTEX_BTL,
+      F_VERTEX_FBL, F_VERTEX_BTL, F_VERTEX_BBL,
+    // Face 6 (Right)
+      F_VERTEX_FTR, F_VERTEX_FBR, F_VERTEX_BBR,
+      F_VERTEX_BBR, F_VERTEX_BTR, F_VERTEX_FTR
+};
 
 // Create a colored cube
-static const Vertex sg_vertexes[] = {
+static const Vertex sg_cube_vertexes[] = {
   // Face 1 (Front)
     VERTEX_FTR, VERTEX_FTL, VERTEX_FBL,
     VERTEX_FBL, VERTEX_FBR, VERTEX_FTR,
@@ -51,16 +112,41 @@ static const Vertex sg_vertexes[] = {
 #undef VERTEX_FTL
 #undef VERTEX_FTR
 
+#undef F_VERTEX_FTR
+#undef F_VERTEX_FTL
+#undef F_VERTEX_FBL
+#undef F_VERTEX_FBR
+
+#undef F_VERTEX_BTR
+#undef F_VERTEX_BTL
+#undef F_VERTEX_BBL
+#undef F_VERTEX_BBR
+
+
+
+
+
 HangarView::HangarView()
 {
     setFocusPolicy(Qt::StrongFocus);
-    m_transformation.translate(0.0f, 0.0f, -3.0f);
-    QVector3D CameraPos(1.0f, 1.0f, -3.0f);
+    m_transformation.translate(0.0f, 0.0f, -12000.0f/2);
+    QVector3D CameraPos(1.0f, 1.0f, -12000.0f);
     QVector3D CameraTarget(0.45f, 0.0f, 1.0f);
     QVector3D CameraUp(0.0f, 1.0f, 0.0f);
-    Camera cam(800, 600);
+    Camera cam(18000, 16000);
     m_transformation.setCamera(cam);
     //m_transformation.scale(0.5f);
+}
+
+void HangarView::addContainerClicked()
+{
+     QMessageBox msgBox;
+     msgBox.setWindowTitle("MessageBox Title");
+     msgBox.setText("You Clicked "+ ((QPushButton*)sender())->text());
+     msgBox.exec();
+
+     i++;
+     j++;
 }
 //User enteractions event handlers
 void HangarView::mouseMoveEvent(QMouseEvent *mouseEvent)
@@ -88,9 +174,9 @@ void HangarView::setGWorld()
 {
     int gWorldLocation = m_program->uniformLocation("gWorld");
     static float Scale = 0.0f;
-    Scale += 0.001f;
-    m_transformation.rotate(Scale, QVector3D(sinf(Scale) * 90.0f, sinf(Scale) * 90.0f, sinf(Scale) * 90.0f));
-    m_transformation.setPerspectiveProj(45.0f, this->width(), this->height(), 0.0f, 1000.0f);
+    Scale = 1.5707f;
+    m_transformation.setRotation(-4.0f * Scale, QVector3D(sinf(Scale) * 90.0f, 0.0f, 0.0f));
+    m_transformation.setPerspectiveProj(45.0f, this->width(), this->height(), 0.0f, 100000.0f);
     m_program->setUniformValue(gWorldLocation, m_transformation.toMatrix());
 }
 
@@ -113,7 +199,7 @@ void HangarView::initializeGL()
     initializeOpenGLFunctions();
     // Set global information
     glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
-    glEnable(GL_CULL_FACE);
+    glEnable(GL_CULL_FACE | GL_DEPTH_TEST);
     {
         // Create Shader (Do not release until VAO is created)
 
@@ -130,7 +216,7 @@ void HangarView::initializeGL()
         m_vertex.create();
         m_vertex.bind();
         m_vertex.setUsagePattern(QOpenGLBuffer::StaticDraw);
-        m_vertex.allocate(sg_vertexes, sizeof(sg_vertexes));
+        m_vertex.allocate(sg_floor_vertexes, sizeof(sg_floor_vertexes));
         // Create Vertex Array Object
         m_object.create();
         m_object.bind();
@@ -148,11 +234,12 @@ void HangarView::initializeGL()
 }
 
 void HangarView::paintGL(){
-    glClear(GL_COLOR_BUFFER_BIT);
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
     m_program->bind();
     {
         m_object.bind();
-        glDrawArrays(GL_TRIANGLES, 0, sizeof(sg_vertexes) / sizeof(sg_vertexes[0]));
+        glDrawArrays(GL_TRIANGLES, 0, sizeof(sg_floor_vertexes) / sizeof(sg_floor_vertexes[0]));
         m_object.release();
     }
     m_program->release();
